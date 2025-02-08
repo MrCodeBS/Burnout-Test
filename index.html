@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -243,8 +244,11 @@
             nextBtn.disabled = false;
         }
 
-        document.querySelectorAll('.option').forEach(option => {
-            option.addEventListener('click', () => selectOption(option));
+        // Add click event listeners to all options using event delegation
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('option')) {
+                selectOption(e.target);
+            }
         });
 
         nextBtn.addEventListener('click', () => {
@@ -256,6 +260,9 @@
                 showResults();
             }
         });
+
+        // Ensure Next button is disabled initially if no option is selected
+        nextBtn.disabled = true;
 
         prevBtn.addEventListener('click', () => {
             if (currentQuestion > 1) {
