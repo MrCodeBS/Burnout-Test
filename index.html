@@ -227,11 +227,23 @@
 
         function showQuestion(questionNumber) {
             document.querySelector('.question.active').classList.remove('active');
-            document.querySelector(`[data-question="${questionNumber}"]`).classList.add('active');
+            const newQuestion = document.querySelector(`[data-question="${questionNumber}"]`);
+            newQuestion.classList.add('active');
+            
+            // Restore selected answer if exists
+            const savedAnswer = answers[questionNumber];
+            if (savedAnswer) {
+                const options = newQuestion.querySelectorAll('.option');
+                options.forEach(opt => {
+                    if (parseInt(opt.dataset.value) === savedAnswer) {
+                        opt.classList.add('selected');
+                    }
+                });
+            }
             
             prevBtn.disabled = questionNumber === 1;
             nextBtn.textContent = questionNumber === totalQuestions ? 'Show Results' : 'Next';
-            
+            nextBtn.disabled = !answers[questionNumber];
             updateProgress();
         }
 
@@ -268,7 +280,6 @@
             if (currentQuestion > 1) {
                 currentQuestion--;
                 showQuestion(currentQuestion);
-                nextBtn.disabled = false;
             }
         });
 
@@ -290,7 +301,7 @@
             } else if (average <= 3.5) {
                 return {
                     level: 'Moderate Risk of Burnout',
-                    description: 'You are showing some signs of burnout. While your situation isn't severe, it's important to address these symptoms before they worsen.',
+                    description: "You are showing some signs of burnout. While your situation isn't severe, it's important to address these symptoms before they worsen.",
                     recommendations: [
                         'Set clearer boundaries between work and personal life',
                         'Take regular breaks during work hours',
@@ -302,7 +313,7 @@
             } else {
                 return {
                     level: 'High Risk of Burnout',
-                    description: 'Your responses indicate a high risk of burnout. It's important to take immediate steps to address this situation.',
+                    description: 'Your responses indicate a high risk of burnout. It\'s important to take immediate steps to address this situation.',
                     recommendations: [
                         'Consider speaking with a mental health professional',
                         'Discuss your workload with your supervisor',
