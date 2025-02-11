@@ -1,351 +1,376 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Burnout Assessment Quiz</title>
+    <meta
+      name="description"
+      content="Take our Burnout Assessment Quiz to evaluate your risk of burnout and get personalized recommendations."
+    />
+    <meta
+      name="keywords"
+      content="burnout, assessment, quiz, mental health, work-life balance, stress management"
+    />
+    <meta name="author" content="Your Name" />
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        color: #333;
+      }
 
-        .quiz-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+      .quiz-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+      }
 
-        .question {
-            display: none;
-            margin-bottom: 25px;
-        }
+      .question {
+        display: none;
+        margin-bottom: 25px;
+      }
 
-        .question.active {
-            display: block;
-        }
+      .question.active {
+        display: block;
+      }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
+      }
 
-        .option {
-            padding: 12px 20px;
-            background-color: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+      .option {
+        padding: 12px 20px;
+        background-color: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
 
-        .option:hover {
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-        }
+      .option:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+      }
 
-        .selected {
-            background-color: #4a90e2;
-            color: white;
-            border-color: #357abd;
-        }
+      .selected {
+        background-color: #4a90e2;
+        color: white;
+        border-color: #357abd;
+      }
 
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
+      .progress-bar {
+        width: 100%;
+        height: 10px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        margin: 20px 0;
+        overflow: hidden;
+      }
 
-        .progress {
-            width: 0%;
-            height: 100%;
-            background-color: #4a90e2;
-            transition: width 0.3s ease;
-        }
+      .progress {
+        width: 0%;
+        height: 100%;
+        background-color: #4a90e2;
+        transition: width 0.3s ease;
+      }
 
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
 
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
 
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
 
-        #nextBtn {
-            background-color: #4a90e2;
-            color: white;
-        }
+      #nextBtn {
+        background-color: #4a90e2;
+        color: white;
+      }
 
-        #prevBtn {
-            background-color: #6c757d;
-            color: white;
-        }
+      #prevBtn {
+        background-color: #6c757d;
+        color: white;
+      }
 
-        #result {
-            display: none;
-            text-align: center;
-        }
+      #result {
+        display: none;
+        text-align: center;
+      }
 
-        .result-category {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #2c3e50;
-        }
+      .result-category {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 20px 0;
+        color: #2c3e50;
+      }
 
-        .result-description {
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
+      .result-description {
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
 
-        .recommendations {
-            text-align: left;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
+      .recommendations {
+        text-align: left;
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="quiz-container">
-        <h1>Burnout Assessment Quiz</h1>
-        <div class="progress-bar">
-            <div class="progress"></div>
+      <h1>Burnout Assessment Quiz</h1>
+      <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+      <div id="quiz">
+        <div class="question active" data-question="1">
+          <p>How often do you feel emotionally drained from your work?</p>
+          <div class="options">
+            <div class="option" data-value="1">Never</div>
+            <div class="option" data-value="2">Rarely</div>
+            <div class="option" data-value="3">Sometimes</div>
+            <div class="option" data-value="4">Often</div>
+            <div class="option" data-value="5">Always</div>
+          </div>
         </div>
-        <div id="quiz">
-            <div class="question active" data-question="1">
-                <p>How often do you feel emotionally drained from your work?</p>
-                <div class="options">
-                    <div class="option" data-value="1">Never</div>
-                    <div class="option" data-value="2">Rarely</div>
-                    <div class="option" data-value="3">Sometimes</div>
-                    <div class="option" data-value="4">Often</div>
-                    <div class="option" data-value="5">Always</div>
-                </div>
-            </div>
-            <div class="question" data-question="2">
-                <p>Do you find it hard to concentrate on tasks?</p>
-                <div class="options">
-                    <div class="option" data-value="1">Never</div>
-                    <div class="option" data-value="2">Rarely</div>
-                    <div class="option" data-value="3">Sometimes</div>
-                    <div class="option" data-value="4">Often</div>
-                    <div class="option" data-value="5">Always</div>
-                </div>
-            </div>
-            <div class="question" data-question="3">
-                <p>How often do you feel physically exhausted at the end of your workday?</p>
-                <div class="options">
-                    <div class="option" data-value="1">Never</div>
-                    <div class="option" data-value="2">Rarely</div>
-                    <div class="option" data-value="3">Sometimes</div>
-                    <div class="option" data-value="4">Often</div>
-                    <div class="option" data-value="5">Always</div>
-                </div>
-            </div>
-            <div class="question" data-question="4">
-                <p>Do you feel disconnected or detached from your work?</p>
-                <div class="options">
-                    <div class="option" data-value="1">Never</div>
-                    <div class="option" data-value="2">Rarely</div>
-                    <div class="option" data-value="3">Sometimes</div>
-                    <div class="option" data-value="4">Often</div>
-                    <div class="option" data-value="5">Always</div>
-                </div>
-            </div>
-            <div class="question" data-question="5">
-                <p>How often do you feel overwhelmed by your workload?</p>
-                <div class="options">
-                    <div class="option" data-value="1">Never</div>
-                    <div class="option" data-value="2">Rarely</div>
-                    <div class="option" data-value="3">Sometimes</div>
-                    <div class="option" data-value="4">Often</div>
-                    <div class="option" data-value="5">Always</div>
-                </div>
-            </div>
-            <div class="buttons">
-                <button id="prevBtn" disabled>Previous</button>
-                <button id="nextBtn">Next</button>
-            </div>
+        <div class="question" data-question="2">
+          <p>Do you find it hard to concentrate on tasks?</p>
+          <div class="options">
+            <div class="option" data-value="1">Never</div>
+            <div class="option" data-value="2">Rarely</div>
+            <div class="option" data-value="3">Sometimes</div>
+            <div class="option" data-value="4">Often</div>
+            <div class="option" data-value="5">Always</div>
+          </div>
         </div>
-        <div id="result">
-            <div class="result-category"></div>
-            <div class="result-description"></div>
-            <div class="recommendations">
-                <h3>Recommendations:</h3>
-                <div class="recommendations-content"></div>
-            </div>
-            <button onclick="location.reload()">Take the Quiz Again</button>
+        <div class="question" data-question="3">
+          <p>
+            How often do you feel physically exhausted at the end of your
+            workday?
+          </p>
+          <div class="options">
+            <div class="option" data-value="1">Never</div>
+            <div class="option" data-value="2">Rarely</div>
+            <div class="option" data-value="3">Sometimes</div>
+            <div class="option" data-value="4">Often</div>
+            <div class="option" data-value="5">Always</div>
+          </div>
         </div>
+        <div class="question" data-question="4">
+          <p>Do you feel disconnected or detached from your work?</p>
+          <div class="options">
+            <div class="option" data-value="1">Never</div>
+            <div class="option" data-value="2">Rarely</div>
+            <div class="option" data-value="3">Sometimes</div>
+            <div class="option" data-value="4">Often</div>
+            <div class="option" data-value="5">Always</div>
+          </div>
+        </div>
+        <div class="question" data-question="5">
+          <p>How often do you feel overwhelmed by your workload?</p>
+          <div class="options">
+            <div class="option" data-value="1">Never</div>
+            <div class="option" data-value="2">Rarely</div>
+            <div class="option" data-value="3">Sometimes</div>
+            <div class="option" data-value="4">Often</div>
+            <div class="option" data-value="5">Always</div>
+          </div>
+        </div>
+        <div class="buttons">
+          <button id="prevBtn" disabled>Previous</button>
+          <button id="nextBtn">Next</button>
+        </div>
+      </div>
+      <div id="result">
+        <div class="result-category"></div>
+        <div class="result-description"></div>
+        <div class="recommendations">
+          <h3>Recommendations:</h3>
+          <div class="recommendations-content"></div>
+        </div>
+        <button onclick="location.reload()">Take the Quiz Again</button>
+      </div>
     </div>
 
     <script>
-        const quiz = document.getElementById('quiz');
-        const result = document.getElementById('result');
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        const progressBar = document.querySelector('.progress');
+      const quiz = document.getElementById("quiz");
+      const result = document.getElementById("result");
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+      const progressBar = document.querySelector(".progress");
 
-        let currentQuestion = 1;
-        const totalQuestions = 5;
-        const answers = {};
+      let currentQuestion = 1;
+      const totalQuestions = 5;
+      const answers = {};
 
-        function updateProgress() {
-            const progress = ((currentQuestion - 1) / totalQuestions) * 100;
-            progressBar.style.width = `${progress}%`;
+      function updateProgress() {
+        const progress = ((currentQuestion - 1) / totalQuestions) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+
+      function showQuestion(questionNumber) {
+        document.querySelector(".question.active").classList.remove("active");
+        const newQuestion = document.querySelector(
+          `[data-question="${questionNumber}"]`
+        );
+        newQuestion.classList.add("active");
+
+        // Restore selected answer if exists
+        const savedAnswer = answers[questionNumber];
+        if (savedAnswer) {
+          const options = newQuestion.querySelectorAll(".option");
+          options.forEach((opt) => {
+            if (parseInt(opt.dataset.value) === savedAnswer) {
+              opt.classList.add("selected");
+            }
+          });
         }
 
-        function showQuestion(questionNumber) {
-            document.querySelector('.question.active').classList.remove('active');
-            const newQuestion = document.querySelector(`[data-question="${questionNumber}"]`);
-            newQuestion.classList.add('active');
-            
-            // Restore selected answer if exists
-            const savedAnswer = answers[questionNumber];
-            if (savedAnswer) {
-                const options = newQuestion.querySelectorAll('.option');
-                options.forEach(opt => {
-                    if (parseInt(opt.dataset.value) === savedAnswer) {
-                        opt.classList.add('selected');
-                    }
-                });
-            }
-            
-            prevBtn.disabled = questionNumber === 1;
-            nextBtn.textContent = questionNumber === totalQuestions ? 'Show Results' : 'Next';
-            nextBtn.disabled = !answers[questionNumber];
-            updateProgress();
-        }
-
-        function selectOption(option) {
-            const currentOptions = document.querySelectorAll('.question.active .option');
-            currentOptions.forEach(opt => opt.classList.remove('selected'));
-            option.classList.add('selected');
-            
-            answers[currentQuestion] = parseInt(option.dataset.value);
-            nextBtn.disabled = false;
-        }
-
-        // Add click event listeners to all options using event delegation
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('option')) {
-                selectOption(e.target);
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (currentQuestion < totalQuestions) {
-                currentQuestion++;
-                showQuestion(currentQuestion);
-                nextBtn.disabled = !answers[currentQuestion];
-            } else {
-                showResults();
-            }
-        });
-
-        // Ensure Next button is disabled initially if no option is selected
-        nextBtn.disabled = true;
-
-        prevBtn.addEventListener('click', () => {
-            if (currentQuestion > 1) {
-                currentQuestion--;
-                showQuestion(currentQuestion);
-            }
-        });
-
-        function calculateBurnoutLevel() {
-            const total = Object.values(answers).reduce((sum, value) => sum + value, 0);
-            const average = total / totalQuestions;
-            
-            if (average <= 2) {
-                return {
-                    level: 'Low Risk of Burnout',
-                    description: 'You appear to be managing your work-life balance well. Your responses suggest that you are experiencing minimal signs of burnout.',
-                    recommendations: [
-                        'Continue maintaining your current work-life balance',
-                        'Practice regular self-care and stress management',
-                        'Stay connected with your support network',
-                        'Regularly assess your stress levels'
-                    ]
-                };
-            } else if (average <= 3.5) {
-                return {
-                    level: 'Moderate Risk of Burnout',
-                    description: "You are showing some signs of burnout. While your situation isn't severe, it's important to address these symptoms before they worsen.",
-                    recommendations: [
-                        'Set clearer boundaries between work and personal life',
-                        'Take regular breaks during work hours',
-                        'Practice stress-reduction techniques like meditation or exercise',
-                        'Consider talking to your supervisor about workload management',
-                        'Make time for activities you enjoy outside of work'
-                    ]
-                };
-            } else {
-                return {
-                    level: 'High Risk of Burnout',
-                    description: 'Your responses indicate a high risk of burnout. It\'s important to take immediate steps to address this situation.',
-                    recommendations: [
-                        'Consider speaking with a mental health professional',
-                        'Discuss your workload with your supervisor',
-                        'Take time off if possible to recover',
-                        'Establish strict boundaries between work and personal life',
-                        'Prioritize self-care and stress management',
-                        'Evaluate your current work situation and consider making changes',
-                        'Build a support network of friends, family, and colleagues'
-                    ]
-                };
-            }
-        }
-
-        function showResults() {
-            quiz.style.display = 'none';
-            result.style.display = 'block';
-            progressBar.style.width = '100%';
-
-            const burnoutResults = calculateBurnoutLevel();
-            
-            document.querySelector('.result-category').textContent = burnoutResults.level;
-            document.querySelector('.result-description').textContent = burnoutResults.description;
-            
-            const recommendationsHtml = burnoutResults.recommendations
-                .map(rec => `<p>• ${rec}</p>`)
-                .join('');
-            document.querySelector('.recommendations-content').innerHTML = recommendationsHtml;
-        }
-
-        // Initialize
-        nextBtn.disabled = true;
+        prevBtn.disabled = questionNumber === 1;
+        nextBtn.textContent =
+          questionNumber === totalQuestions ? "Show Results" : "Next";
+        nextBtn.disabled = !answers[questionNumber];
         updateProgress();
+      }
+
+      function selectOption(option) {
+        const currentOptions = document.querySelectorAll(
+          ".question.active .option"
+        );
+        currentOptions.forEach((opt) => opt.classList.remove("selected"));
+        option.classList.add("selected");
+
+        answers[currentQuestion] = parseInt(option.dataset.value);
+        nextBtn.disabled = false;
+      }
+
+      // Add click event listeners to all options using event delegation
+      document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("option")) {
+          selectOption(e.target);
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (currentQuestion < totalQuestions) {
+          currentQuestion++;
+          showQuestion(currentQuestion);
+          nextBtn.disabled = !answers[currentQuestion];
+        } else {
+          showResults();
+        }
+      });
+
+      // Ensure Next button is disabled initially if no option is selected
+      nextBtn.disabled = true;
+
+      prevBtn.addEventListener("click", () => {
+        if (currentQuestion > 1) {
+          currentQuestion--;
+          showQuestion(currentQuestion);
+        }
+      });
+
+      function calculateBurnoutLevel() {
+        const total = Object.values(answers).reduce(
+          (sum, value) => sum + value,
+          0
+        );
+        const average = total / totalQuestions;
+
+        if (average <= 2) {
+          return {
+            level: "Low Risk of Burnout",
+            description:
+              "You appear to be managing your work-life balance well. Your responses suggest that you are experiencing minimal signs of burnout.",
+            recommendations: [
+              "Continue maintaining your current work-life balance",
+              "Practice regular self-care and stress management",
+              "Stay connected with your support network",
+              "Regularly assess your stress levels",
+            ],
+          };
+        } else if (average <= 3.5) {
+          return {
+            level: "Moderate Risk of Burnout",
+            description:
+              "You are showing some signs of burnout. While your situation isn't severe, it's important to address these symptoms before they worsen.",
+            recommendations: [
+              "Set clearer boundaries between work and personal life",
+              "Take regular breaks during work hours",
+              "Practice stress-reduction techniques like meditation or exercise",
+              "Consider talking to your supervisor about workload management",
+              "Make time for activities you enjoy outside of work",
+            ],
+          };
+        } else {
+          return {
+            level: "High Risk of Burnout",
+            description:
+              "Your responses indicate a high risk of burnout. It's important to take immediate steps to address this situation.",
+            recommendations: [
+              "Consider speaking with a mental health professional",
+              "Discuss your workload with your supervisor",
+              "Take time off if possible to recover",
+              "Establish strict boundaries between work and personal life",
+              "Prioritize self-care and stress management",
+              "Evaluate your current work situation and consider making changes",
+              "Build a support network of friends, family, and colleagues",
+            ],
+          };
+        }
+      }
+
+      function showResults() {
+        quiz.style.display = "none";
+        result.style.display = "block";
+        progressBar.style.width = "100%";
+
+        const burnoutResults = calculateBurnoutLevel();
+
+        document.querySelector(".result-category").textContent =
+          burnoutResults.level;
+        document.querySelector(".result-description").textContent =
+          burnoutResults.description;
+
+        const recommendationsHtml = burnoutResults.recommendations
+          .map((rec) => `<p>• ${rec}</p>`)
+          .join("");
+        document.querySelector(".recommendations-content").innerHTML =
+          recommendationsHtml;
+      }
+
+      // Initialize
+      nextBtn.disabled = true;
+      updateProgress();
     </script>
-</body>
+  </body>
 </html>
